@@ -172,11 +172,12 @@ def append_contactpoints(cps: Union[ContactPoint, list[ContactPoint]], key: str,
                 append_period(cp.period, f"{key_name}_period", properties)
 
 
-def append_datetime(date: FHIRDate, key: str, properties: dict) -> None:
-    """Processes FHIRDate object and adds object values to {properties} dict.
+def append_datetimes(dates: Union[FHIRDate, list[FHIRDate]], key: str, properties: dict) -> None:
+    """Processes FHIRDate object(s) and adds object values to {properties} dict.
+    If {dates} is a list, all items of the list are processed and the keys are numbered accordingly.
 
     Args:
-        date (FHIRDate): FHIRDate object
+        dates (Union[FHIRDate, list[FHIRDate]]): FHIRDate object or a list of FHIRDate objects
         key (str): name of the property key to use
         properties (dict): dictionary in which the properties are to be stored
 
@@ -184,8 +185,16 @@ def append_datetime(date: FHIRDate, key: str, properties: dict) -> None:
         None
     """
 
-    if date is not None:
-        append_properties(date.date, key, properties)
+    if dates is not None:
+        if type(dates) is not list:
+            # make it a list for further processing
+            dates = [dates]
+
+        for n, date in enumerate(dates):
+            if date is not None:
+                key_name = key if n == 0 else f"{key}{n + 1}"
+
+                append_properties(date.date, key_name, properties)
 
 
 def append_humannames(names: Union[HumanName, list[HumanName]], properties: dict, key: str = "name") -> None:
@@ -337,13 +346,13 @@ def append_period(period: Period, key: str, properties: dict) -> None:
         Cardinality: 0..1
         Type: DateTime datatype
         """
-        append_datetime(period.start, f"{key}_start", properties)
+        append_datetimes(period.start, f"{key}_start", properties)
 
         """ Period.end
         Cardinality: 0..1
         Type: DateTime datatype
         """
-        append_datetime(period.end, f"{key}_end", properties)
+        append_datetimes(period.end, f"{key}_end", properties)
 
 
 def append_properties(values: Union[Union[str, int, float, bool], list[Union[str, int, float, bool]]], key: str, properties: dict) -> None:
@@ -620,7 +629,7 @@ def process_annotations(
         Cardinality: 0..1
         Type: dateTime datatype
         """
-        append_datetime(annotation.time, "time", properties)
+        append_datetimes(annotation.time, "time", properties)
 
         """ Annotation.text
         Cardinality: 1..1
@@ -707,7 +716,7 @@ def process_attachments(
         Cardinality: 0..1
         Type: dateTime object
         """
-        append_datetime(attachment.creation, "creation", properties)
+        append_datetimes(attachment.creation, "creation", properties)
 
 
 def process_backboneelements(
@@ -1176,7 +1185,7 @@ def process_timings(
         Cardinality: 0..*
         Type: list of dateTime datatypes
         """
-        append_datetime(timing.event, "event", properties)
+        append_datetimes(timing.event, "event", properties)
 
         """ Timing.repeat
         Cardinality: 0..1
@@ -1275,7 +1284,7 @@ def process_timings(
             Cardinality: 0..*
             Type: list of dateTime objects
             """
-            append_datetime(timing.repeat.timeOfDay, "repeat_timeofday", properties)
+            append_datetimes(timing.repeat.timeOfDay, "repeat_timeofday", properties)
 
             """ Timing.repeat.when
             Cardinality: 0..*

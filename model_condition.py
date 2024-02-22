@@ -179,7 +179,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(condition.onsetDateTime, "onset", properties)
+    common.append_datetimes(condition.onsetDateTime, "onset", properties)
 
     """ Condition.onsetAge
     Cardinality: 0..1
@@ -213,7 +213,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(condition.abatementDateTime, "abatement", properties)
+    common.append_datetimes(condition.abatementDateTime, "abatement", properties)
 
     """ Condition.abatementAge
     Cardinality: 0..1
@@ -243,7 +243,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(condition.recordedDate, "recorded_date", properties)
+    common.append_datetimes(condition.recordedDate, "recorded_date", properties)
 
     """ Condition.recorder
     Cardinality: 0..1

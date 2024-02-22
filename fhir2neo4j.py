@@ -13,6 +13,7 @@ import multiprocessing.pool
 import os.path
 import sys
 import time
+from requests.exceptions import HTTPError
 
 from rich.logging import RichHandler
 import rich.console
@@ -324,9 +325,13 @@ def fetch_resources(
             while True:
                 try:
                     # Read bundle from server.
+                    log.error(next_url)
                     bundle = bundle_read_from(next_url, fc.server, novalidation)
                 except FHIRValidationError:
                     rich_console.print("[bright_red]Got validation error (consider using \"--novalidation\").")
+                    break
+                except HTTPError as e:
+                    log.error(f"Error while reading bundle: {e}")
                     break
                 except Exception:
                     raise

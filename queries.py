@@ -215,6 +215,7 @@ def batch_merge_node(
         r = tx.run(query, items=node_merges_tx)
         return r.consume()
 
+    result = None
     with neo4j_driver.session(database=database) as session:
         # in case of parallel processing deadlocks may occur, in that case retry three times
         n = 0
@@ -278,6 +279,7 @@ def batch_merge_node_relationship(
         r = tx.run(query, items=node_relationship_merges_tx)
         return r.consume()  # because of the APOC calls, the counters of the summary object do not contain valid values
 
+    result = None
     with neo4j_driver.session(database=database) as session:
         # in case of parallel processing deadlocks may occur, in that case retry three times
         n = 0
@@ -294,6 +296,9 @@ def batch_merge_node_relationship(
                 else:
                     log.error("Neo4j deadlock occurred and could not be resolved after three attempts. Consider disabling parallel processing.")
                     break
+            except OverflowError:
+                log.error("Got value overflow error. Discarding bundle.")
+                break
             except Exception:
                 raise
             break

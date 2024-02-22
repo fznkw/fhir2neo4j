@@ -200,7 +200,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(procedure.performedDateTime, "performed", properties)
+    common.append_datetimes(procedure.performedDateTime, "performed", properties)
 
     """ Procedure.performedPeriod
     Cardinality: 0..1
@@ -363,7 +363,7 @@ def process_resource(
             Cardinality: 1..1
             Type: dateTime datatype
             """
-            common.append_datetime(extension.valueDateTime, "dokumentationsdatum", properties)
+            common.append_datetimes(extension.valueDateTime, "dokumentationsdatum", properties)
         elif extension.url == "https://simplifier.net/medizininformatikinitiative-modulprozeduren/files/extensions/sd-mii-prozedur-durchfuehrungsabsicht.xml":
             """ Procedure.extension:Durchfuehrungsabsicht
             Cardinality: 0..1

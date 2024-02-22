@@ -135,7 +135,7 @@ def process_resource(
     Cardinality: 0..1
     Type: date
     """
-    common.append_datetime(patient.birthDate, "birthdate", properties)
+    common.append_datetimes(patient.birthDate, "birthdate", properties)
 
     """ Patient.deceased[x]
     Cardinality: 0..1
@@ -151,7 +151,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(patient.deceasedDateTime, "deceased", properties)
+    common.append_datetimes(patient.deceasedDateTime, "deceased", properties)
 
     """ Patient.address
     Cardinality: 0..*

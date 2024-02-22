@@ -92,6 +92,7 @@ def initialize_database(neo4j_driver: neo4j.Driver, database: str) -> list[neo4j
     results.append(queries.create_constraint_unique_node_properties("ServiceRequest", "fhir_id", neo4j_driver, database))
     results.append(queries.create_constraint_unique_node_properties("Specimen", "fhir_id", neo4j_driver, database))
     results.append(queries.create_constraint_unique_node_properties("Substance", "fhir_id", neo4j_driver, database))
+    results.append(queries.create_constraint_unique_node_properties("Task", "fhir_id", neo4j_driver, database))
 
     return results
 
@@ -196,7 +197,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(observation.effectiveDateTime, "effective", properties)
+    common.append_datetimes(observation.effectiveDateTime, "effective", properties)
 
     """ Observation.effectivePeriod
     Cardinality: 0..1
@@ -214,13 +215,13 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(observation.effectiveInstant, "effective", properties)
+    common.append_datetimes(observation.effectiveInstant, "effective", properties)
 
     """ Observation.issued
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(observation.issued, "issued", properties)
+    common.append_datetimes(observation.issued, "issued", properties)
 
     """ Observation.performer
     Cardinality: 0..*
@@ -284,13 +285,13 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(observation.valueTime, "value", properties)
+    common.append_datetimes(observation.valueTime, "value", properties)
 
     """ Observation.valueDateTime
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(observation.valueDateTime, "value", properties)
+    common.append_datetimes(observation.valueDateTime, "value", properties)
 
     """ Observation.valuePeriod
     Cardinality: 0..1
@@ -464,13 +465,13 @@ def process_resource(
         Cardinality: 0..1
         Type: dateTime datatype
         """
-        common.append_datetime(component.valueTime, "value", component_properties)
+        common.append_datetimes(component.valueTime, "value", component_properties)
 
         """ Observation.component.valueDateTime
         Cardinality: 0..1
         Type: dateTime datatype
         """
-        common.append_datetime(component.valueDateTime, "value", component_properties)
+        common.append_datetimes(component.valueDateTime, "value", component_properties)
 
         """ Observation.component.valuePeriod
         Cardinality: 0..1

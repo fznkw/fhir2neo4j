@@ -167,7 +167,7 @@ def process_resource(
     Cardinality: 0..1
     Type: dateTime datatype
     """
-    common.append_datetime(diagnostic_report.effectiveDateTime, "effective", properties)
+    common.append_datetimes(diagnostic_report.effectiveDateTime, "effective", properties)
 
     """ DiagnosticReport.effectivePeriod
     Cardinality: 0..1
@@ -179,7 +179,7 @@ def process_resource(
     Cardinality: 0..1
     Type: instant (dateTime)
     """
-    common.append_datetime(diagnostic_report.issued, "issued", properties)
+    common.append_datetimes(diagnostic_report.issued, "issued", properties)
 
     """ DiagnosticReport.performer
     Cardinality: 0..*
